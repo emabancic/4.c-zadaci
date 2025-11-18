@@ -1,0 +1,156 @@
+# Definicija klase Učenik
+class Ucenik:
+    """
+    Nacrt (klasa) za stvaranje objekata koji predstavljaju učenike.
+    Svaki učenik ima ime, prezime, razred i listu ocjena.
+    """
+
+    def __init__(self, ime, prezime, razred):
+        """Inicijalizira novi objekt Učenik s početnim podacima."""
+        self.ime = ime
+        self.prezime = prezime
+        self.razred = razred
+        self.ocjene = []  
+
+    def dodaj_ocjenu(self, ocjena):
+        """Dodaje novu ocjenu u listu ocjena učenika."""
+        if isinstance(ocjena, int) and 1 <= ocjena <= 5:
+            self.ocjene.append(ocjena)
+            print(f"INFO: Učeniku {self.ime} {self.prezime} je upisana ocjena {ocjena}.")
+        else:
+            print(f"GREŠKA: Ocjena '{ocjena}' nije važeća. Molimo unesite broj od 1 do 5.")
+
+    def izracunaj_prosjek(self):
+        """Vraća prosjek svih ocjena učenika."""
+        if not self.ocjene:
+            return 0.0
+        return sum(self.ocjene) / len(self.ocjene)
+
+    def info(self):
+        """Ispisuje sve dostupne informacije o učeniku na konzolu."""
+        print("-" * 30)
+        print(f"Ime i prezime: {self.ime} {self.prezime}")
+        print(f"Razred: {self.razred}")
+        
+        if self.ocjene:
+            print(f"Ocjene: {self.ocjene}")
+        else:
+            print("Ocjene: (nema upisanih ocjena)")
+            
+        prosjek = self.izracunaj_prosjek()
+        print(f"Prosjek ocjena: {prosjek:.2f}") 
+        print("-" * 30)
+
+
+# ---------- TESTNI DIO PROGRAMA ----------
+
+# Kreiranje dva učenika
+u1 = Ucenik("Marko", "Marić", "7.a")
+u2 = Ucenik("Ana", "Klarić", "6.b")
+
+# Dodavanje ocjena
+u1.dodaj_ocjenu(5)
+u1.dodaj_ocjenu(4)
+u1.dodaj_ocjenu(6)  # nevažeća ocjena, ispisat će poruku o grešci
+
+u2.dodaj_ocjenu(3)
+u2.dodaj_ocjenu(5)
+
+# Ispis informacija
+u1.info()
+u2.info()
+# --- FUNKCIJE ZA INTERAKCIJU S KORISNIKOM ---
+
+def ispisi_izbornik():
+    """Jednostavno ispisuje glavni izbornik."""
+    print("-" * 50)
+    print("Glavni izbornik")
+    print("-" * 50)
+    print("0. Izlaz iz programa")
+    print("1. Unos nove učenice")
+    print("2. Unos ocjena za učenicu")
+    print("3. Ispis podataka o učenici")
+    print("-" * 50)
+
+
+def upisUcenice(ime, prezime, razred):
+    """
+    Prima podatke i VRAĆA novi OBJEKT klase Ucenik.
+    """
+    ucenik = Ucenik(ime, prezime, razred)   # poziv konstruktora
+    return ucenik
+
+
+def upisOcjene(ucenik, ocjena):
+    """
+    Prima objekt učenika i ocjenu i poziva metodu dodaj_ocjenu nad tim objektom.
+    """
+    ucenik.dodaj_ocjenu(ocjena)
+
+
+def ispisPodataka(ucenik):
+    """
+    Prima objekt učenika i poziva njegovu info() metodu.
+    """
+    ucenik.info()
+# --- GLAVNI DIO PROGRAMA ---
+
+lista_ucenika = []       # Lista svih učenika (objekata)
+provjera = False         # Varijabla koja prati je li učenik pronađen
+
+while True:
+    ispisi_izbornik()
+    
+    try:
+        izbor = int(input("Unesite izbor (0/1/2/3): "))
+
+        # --- OPCIJA 1: Unos nove učenice ---
+        if izbor == 1:
+            print("Unos nove učenice")
+            ime = input("Unesite ime učenika: ")
+            prezime = input("Unesite prezime učenika: ")
+            razred = input("Unesite razred učenika: ")
+
+            ucenik = upisUcenice(ime, prezime, razred)
+            lista_ucenika.append(ucenik)
+            print("Učenik uspješno dodan!")
+
+        # --- OPCIJA 2: Unos ocjena ---
+        elif izbor == 2:
+            ime = input("Unesite ime učenika kojem želite dodati ocjenu: ")
+            provjera = False
+
+            for ucenik in lista_ucenika:
+                if ucenik.ime == ime:
+                    provjera = True
+                    ocjena = int(input("Unesite ocjenu: "))
+                    upisOcjene(ucenik, ocjena)
+                    break
+
+            if not provjera:
+                print("Učenik nije pronađen.")
+
+        # --- OPCIJA 3: Ispis podataka ---
+        elif izbor == 3:
+            ime = input("Unesite ime učenika za ispis podataka: ")
+            provjera = False
+
+            for ucenik in lista_ucenika:
+                if ucenik.ime == ime:
+                    ispisPodataka(ucenik)
+                    provjera = True
+                    break
+
+            if not provjera:
+                print("Učenik nije pronađen.")
+
+        # --- OPCIJA 0: Izlaz ---
+        elif izbor == 0:
+            print("Hvala na korištenju programa.")
+            break
+
+        else:
+            print("Nepoznata opcija, pokušajte ponovno.")
+
+    except ValueError:
+        print("Molimo unesite ispravan broj (0, 1, 2 ili 3).")
