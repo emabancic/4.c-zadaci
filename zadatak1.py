@@ -1,23 +1,14 @@
-#definicija klase knjiga
 class Knjiga:
     def __init__(self, naslov, autor, godina_izdanja):
         self.naslov = naslov
         self.autor = autor
         self.godina_izdanja = godina_izdanja
-    def _str_(self):
-        return f("Knjiga: {self.naslov}, Autor: {self.autor}, Godina izdanja: {self.godina_izdanja}")
-
-# ---- Glavni program ----
-# Ovdje kreiramo objekte klase Knjiga i koristimo njihove metode    
-knjiga1 = Knjiga("Preobrazba", "Franz kafka", 1912)
-knjiga2 = Knjiga("Harry Potter", "J.K Rolling", 1997)
-knjiga3 = Knjiga("Zločin i kazna", "Fjodor Dostojevski", 1866) 
-print(knjiga1)
-print(knjiga2)      
-print(knjiga3)
 
 
+# Kreiranje dvaju objekata klase Knjiga
+knjiga1 = Knjiga("Gospodar prstenova", "J.R.R. Tolkien", 1954)
+knjiga2 = Knjiga("Na Drini ćuprija", "Ivo Andrić", 1945)
 
-
-     
-
+# Ispis podataka o knjigama
+print("Naslov:", knjiga1.naslov, ", Autor:", knjiga1.autor, ", Godina:", knjiga1.godina_izdanja)
+print("Naslov:", knjiga2.naslov, ", Autor:", knjiga2.autor, ", Godina:", knjiga2.godina_izdanja)

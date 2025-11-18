@@ -1,34 +1,56 @@
-#definicija klase BankovniRacun
 class BankovniRacun:
-    def __init__(self, broj_racuna, vlasnik, stanje=0.0):
+    def __init__(self, ime_vlasnika, broj_racuna):
+        self.ime_vlasnika = ime_vlasnika
         self.broj_racuna = broj_racuna
-        self.vlasnik = vlasnik
-        self.stanje = stanje
+        self.stanje = 0.0
 
-    def uplata(self, iznos):
-        if iznos > 0:
-            self.stanje += iznos
-            print(f"INFO: Na račun {self.broj_racuna} izvršena je uplata od {iznos:.2f}. Novo stanje: {self.stanje:.2f}.")
-        else:
-            print(f"GREŠKA: Iznos uplate mora biti pozitivan. Unijeli ste: {iznos:.2f}.")
+    def uplati(self, iznos):
+        if iznos <= 0:
+            print("Iznos za uplatu mora biti pozitivan!")
+            return
+        self.stanje += iznos
+        print(f"Uplata uspješna! Uplaćeno: {iznos} EUR. Novo stanje: {self.stanje:.2f} EUR")
 
-    def isplata(self, iznos):
-        if iznos > 0:
-            if iznos <= self.stanje:
-                self.stanje -= iznos
-                print(f"INFO: Sa računa {self.broj_racuna} izvršena je isplata od {iznos:.2f}. Novo stanje: {self.stanje:.2f}.")
-            else:
-                print(f"GREŠKA: Nedovoljno sredstava na računu {self.broj_racuna}. Trenutno stanje: {self.stanje:.2f}, pokušavate isplatiti: {iznos:.2f}.")
-        else:
-            print(f"GREŠKA: Iznos isplate mora biti pozitivan. Unijeli ste: {iznos:.2f}.")
+    def isplati(self, iznos):
+        if iznos <= 0:
+            print("Iznos za isplatu mora biti pozitivan!")
+            return
+        if iznos > self.stanje:
+            print("Nedovoljno sredstava na računu!")
+            return
+        self.stanje -= iznos
+        print(f"Isplata uspješna! Isplaćeno: {iznos} EUR. Novo stanje: {self.stanje:.2f} EUR")
 
     def info(self):
-        print(f"Račun broj: {self.broj_racuna}, Vlasnik: {self.vlasnik}, Stanje: {self.stanje:.2f}")
-        print("-"*30)
-# ---- Glavni program ----
-# Ovdje kreiramo objekte klase BankovniRacun i koristimo njihove metode
-racun1 = BankovniRacun("123-4567890123-45", "Ivan Horvat", 1000.0)
-racun2 = BankovniRacun("987-6543210987-65", "Ana Kovač", 500.0) 
-# prikaz početnog stanja računa
-racun1.info()
-racun2.info()
+        print("\n--- Podaci o računu ---")
+        print("Vlasnik:", self.ime_vlasnika)
+        print("Broj računa:", self.broj_racuna)
+        print(f"Trenutno stanje: {self.stanje:.2f} EUR")
+        print("-------------------------\n")
+
+
+# TESTIRANJE PROGRAMA
+
+racun = BankovniRacun("Ivan Horvat", "HR12 3456 7890 1234")
+
+racun.info()
+
+# Uplate
+racun.uplati(100)
+racun.info()
+
+racun.uplati(50.5)
+racun.info()
+
+racun.uplati(-20)  # pokušaj neispravne uplate
+racun.info()
+
+# Isplate
+racun.isplati(30)
+racun.info()
+
+racun.isplati(200)  # pokušaj isplate većeg iznosa od stanja
+racun.info()
+
+racun.isplati(-10)  # neispravna isplata
+racun.info()
